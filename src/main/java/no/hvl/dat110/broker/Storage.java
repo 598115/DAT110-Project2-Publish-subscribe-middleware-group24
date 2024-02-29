@@ -3,9 +3,8 @@ package no.hvl.dat110.broker;
 import java.util.Collection;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Flow.Subscription;
 
-import no.hvl.dat110.common.TODO;
-import no.hvl.dat110.common.Logger;
 import no.hvl.dat110.messagetransport.Connection;
 
 public class Storage {
@@ -52,50 +51,40 @@ public class Storage {
 
 	public void addClientSession(String user, Connection connection) {
 
-		// TODO: add corresponding client session to the storage
-		// See ClientSession class
-		
-		throw new UnsupportedOperationException(TODO.method());
+		clients.put(user, new ClientSession(user, connection));
 		
 	}
 
 	public void removeClientSession(String user) {
 
-		// TODO: disconnet the client (user) 
-		// and remove client session for user from the storage
-		
-		throw new UnsupportedOperationException(TODO.method());
+		clients.remove(user);
 		
 	}
 
 	public void createTopic(String topic) {
 
-		// TODO: create topic in the storage
-
-		throw new UnsupportedOperationException(TODO.method());
-	
+		Set<String> emptySet = ConcurrentHashMap.newKeySet();
+        subscriptions.put(topic, emptySet);
+		
 	}
 
 	public void deleteTopic(String topic) {
 
-		// TODO: delete topic from the storage
+		subscriptions.remove(topic);
+       		
+	}
 
-		throw new UnsupportedOperationException(TODO.method());
+	public void addSubscriber(String user, String topic) {  //TODO erm idk if this works
+
+		Set<String> set = subscriptions.get(topic);
+		set.add(user);
 		
 	}
 
-	public void addSubscriber(String user, String topic) {
+	public void removeSubscriber(String user, String topic) { //TODO idk if this works too because copied from addSubscriber xd
 
-		// TODO: add the user as subscriber to the topic
-		
-		throw new UnsupportedOperationException(TODO.method());
-		
+		Set<String> set = subscriptions.get(topic);
+		set.remove(user);
 	}
 
-	public void removeSubscriber(String user, String topic) {
-
-		// TODO: remove the user as subscriber to the topic
-
-		throw new UnsupportedOperationException(TODO.method());
-	}
 }
